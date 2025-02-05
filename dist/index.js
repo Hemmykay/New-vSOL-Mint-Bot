@@ -184,3 +184,9 @@ function startSupplyCheck() {
     });
 }
 client.login(process.env.DISCORD_TOKEN);
+exports.default = (function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        res.status(200).json({ message: "Bot is running" });
+        return [2 /*return*/];
+    });
+}); });
