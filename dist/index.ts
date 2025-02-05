@@ -1,4 +1,5 @@
 import { Client, GatewayIntentBits, type Message, type TextChannel } from "discord.js"
+import type { VercelRequest, VercelResponse } from "@vercel/node"
 import axios from "axios"
 import dotenv from "dotenv"
 
