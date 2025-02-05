@@ -135,6 +135,9 @@ async function startSupplyCheck() {
 
 client.login(process.env.DISCORD_TOKEN)
 
-export default async (req: VercelRequest, res: VercelResponse) => {
-  res.status(200).json({ message: "Bot is running" })
+export default async function handler(req: any, res: any) {
+  if (!client.isReady()) {
+    await client.login(process.env.DISCORD_TOKEN)
+  }
+  res.status(200).end("Bot is running")
 }
