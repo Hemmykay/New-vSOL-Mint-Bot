@@ -1,5 +1,4 @@
 import { Client, GatewayIntentBits, type Message, type TextChannel } from "discord.js"
-import type { VercelRequest, VercelResponse } from "@vercel/node"
 import axios from "axios"
 import dotenv from "dotenv"
 
@@ -31,27 +30,27 @@ function generateMintingMessage(amount: number): string {
 
   if (amount >= EXCITEMENT_RANGE_3) {
     messages = [
-      `🚀🚀🚀 INCREDIBLE! A massive **${formatNumber(amount)} $vSOL** just minted to The vault! This is HUGE!`,
-      `🎉🎉🎉 PHENOMENAL NEWS! **${formatNumber(amount)} $vSOL** has been minted! The community is THRIVING!`,
-      `⚡⚡⚡ MIND-BLOWING! **${formatNumber(amount)} $vSOL** has just been minted!`,
+      `🚀🚀🚀 INCREDIBLE! A massive ${formatNumber(amount)} vSOL just flooded into the vault! This is HUGE!`,
+      `🎉🎉🎉 PHENOMENAL NEWS! ${formatNumber(amount)} vSOL has been minted! The community is THRIVING!`,
+      `⚡⚡⚡ MIND-BLOWING! ${formatNumber(amount)} vSOL just joined us! This is a GAME-CHANGER!`,
     ]
   } else if (amount >= EXCITEMENT_RANGE_2) {
     messages = [
-      `🚀🚀 Major deployment detected! **${formatNumber(amount)} $vSOL** just entered the vault!`,
-      `🎉🎉 Wow! An impressive **${formatNumber(amount)} $vSOL** has been minted! This is big!`,
-      `⚡⚡ Alert! **${formatNumber(amount)} $vSOL** has arrived! The community is growing fast!`,
+      `🚀🚀 Major deployment detected! ${formatNumber(amount)} vSOL just entered the vault!`,
+      `🎉🎉 Wow! An impressive ${formatNumber(amount)} vSOL has been minted! This is big!`,
+      `⚡⚡ Alert! ${formatNumber(amount)} vSOL has arrived! The community is growing fast!`,
     ]
   } else if (amount >= EXCITEMENT_RANGE_1) {
     messages = [
-      `🚀 Nice! **${formatNumber(amount)} $vSOL** has been added to the vault!`,
-      `🎉 Exciting times! **${formatNumber(amount)} $vSOL** just minted!`,
-      `⚡ Heads up! **${formatNumber(amount)} $vSOL** has been freshly minted!`,
+      `🚀 Nice! ${formatNumber(amount)} vSOL has been added to the vault!`,
+      `🎉 Exciting times! ${formatNumber(amount)} vSOL just joined the ranks!`,
+      `⚡ Heads up! ${formatNumber(amount)} vSOL has been freshly minted!`,
     ]
   } else {
     messages = [
-      `A new recruit minted **${formatNumber(amount)} $vSOL**!`,
-      `**${formatNumber(amount)} $vSOL** has arrived on the scene!`,
-      `Welcome aboard! **${formatNumber(amount)} $vSOL** just minted!`,
+      `A new recruit minted ${formatNumber(amount)} vSOL!`,
+      `${formatNumber(amount)} vSOL has arrived on the scene!`,
+      `Welcome aboard! ${formatNumber(amount)} vSOL just joined us!`,
     ]
   }
 
@@ -61,6 +60,7 @@ function generateMintingMessage(amount: number): string {
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user?.tag}!`)
+  startSupplyCheck()
 })
 
 client.on("messageCreate", async (message: Message) => {
@@ -72,7 +72,7 @@ client.on("messageCreate", async (message: Message) => {
       return
     }
 
-    message.reply(`Current Supply: **${formatNumber(currentSupply)} $vSOL**`)
+    message.reply(`Current Supply: ${formatNumber(currentSupply)} vSOL`)
   }
 })
 
@@ -97,56 +97,40 @@ async function getTokenSupply(tokenAddress: string): Promise<number> {
   return Number(response.data.result.value.uiAmount.toFixed(2))
 }
 
-async function checkSupply() {
-  try {
-    if (!DEFAULT_TOKEN_ADDRESS) {
-      console.error("Default token address not set")
-      return
-    }
+async function startSupplyCheck() {
+  setInterval(async () => {
+    try {
+      if (!DEFAULT_TOKEN_ADDRESS) {
+        console.error("Default token address not set")
+        return
+      }
 
-    const newSupply = await getTokenSupply(DEFAULT_TOKEN_ADDRESS)
+      const newSupply = await getTokenSupply(DEFAULT_TOKEN_ADDRESS)
 
-    if (currentSupply !== null) {
-      const change = Number((newSupply - currentSupply).toFixed(2))
-      if (change >= IGNORE_RANGE) {
-        const channel = client.channels.cache.get(CHANNEL_ID!) as TextChannel
-        if (channel) {
-          const message = generateMintingMessage(change)
-          channel.send(message)
+      if (currentSupply !== null) {
+        const change = Number((newSupply - currentSupply).toFixed(2))
+        if (change >= IGNORE_RANGE) {
+          const channel = client.channels.cache.get(CHANNEL_ID!) as TextChannel
+          if (channel) {
+            const message = generateMintingMessage(change)
+            channel.send(message)
+          } else {
+            console.error("Channel not found")
+          }
         } else {
-          console.error("Channel not found")
+          console.log(`Minted amount (${formatNumber(change)} vSOL) below IGNORE_RANGE. No message sent.`)
         }
       } else {
-        console.log(`Minted amount (${formatNumber(change)} vSOL) below IGNORE_RANGE. No message sent.`)
+        console.log("Initial Supply Set:", formatNumber(newSupply))
       }
-    } else {
-      console.log("Initial Supply Set:", formatNumber(newSupply))
+
+      currentSupply = newSupply
+      console.log(`Current Token Supply: ${formatNumber(currentSupply)}`)
+    } catch (error) {
+      console.error("Error checking supply:", error)
     }
-
-    currentSupply = newSupply
-    console.log(`Current Token Supply: ${formatNumber(currentSupply)}`)
-  } catch (error) {
-    console.error("Error checking supply:", error)
-  }
+  }, 30000)
 }
 
-// Initialize the bot
-let isInitialized = false
-async function initializeBot() {
-  if (!isInitialized) {
-    await client.login(process.env.DISCORD_TOKEN)
-    isInitialized = true
-    console.log("Bot initialized")
-  }
-}
+client.login(process.env.DISCORD_TOKEN)
 
-// Vercel serverless function
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method === "POST") {
-    await initializeBot()
-    await checkSupply()
-    res.status(200).json({ message: "Supply check completed" })
-  } else {
-    res.status(200).json({ message: "Bot is running" })
-  }
-}
