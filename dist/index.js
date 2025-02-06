@@ -69,7 +69,7 @@ client.on("messageCreate", async (message) => {
             message.reply("Current supply not yet set. Please wait a few seconds.");
             return;
         }
-        message.reply(`Current Supply: ${formatNumber(currentSupply)} vSOL`);
+        message.reply(`Current Supply: **${formatNumber(currentSupply)} $vSOL**`);
     }
 });
 async function getTokenSupply(tokenAddress) {

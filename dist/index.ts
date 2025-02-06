@@ -72,7 +72,7 @@ client.on("messageCreate", async (message: Message) => {
       return
     }
 
-    message.reply(`Current Supply: ${formatNumber(currentSupply)} vSOL`)
+    message.reply(`Current Supply: **${formatNumber(currentSupply)} $vSOL**`)
   }
 })
 
