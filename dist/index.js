@@ -59,7 +59,6 @@ function generateMintingMessage(amount) {
 }
 client.on("ready", () => {
     console.log(`Logged in as ${client.user?.tag}!`);
-    startSupplyCheck();
 });
 client.on("messageCreate", async (message) => {
     if (message.author.bot)
@@ -86,46 +85,57 @@ async function getTokenSupply(tokenAddress) {
     }
     return Number(response.data.result.value.uiAmount.toFixed(2));
 }
-async function startSupplyCheck() {
-    setInterval(async () => {
-        try {
-            if (!DEFAULT_TOKEN_ADDRESS) {
-                console.error("Default token address not set");
-                return;
-            }
-            const newSupply = await getTokenSupply(DEFAULT_TOKEN_ADDRESS);
-            if (currentSupply !== null) {
-                const change = Number((newSupply - currentSupply).toFixed(2));
-                if (change >= IGNORE_RANGE) {
-                    const channel = client.channels.cache.get(CHANNEL_ID);
-                    if (channel) {
-                        const message = generateMintingMessage(change);
-                        channel.send(message);
-                    }
-                    else {
-                        console.error("Channel not found");
-                    }
+async function checkSupply() {
+    try {
+        if (!DEFAULT_TOKEN_ADDRESS) {
+            console.error("Default token address not set");
+            return;
+        }
+        const newSupply = await getTokenSupply(DEFAULT_TOKEN_ADDRESS);
+        if (currentSupply !== null) {
+            const change = Number((newSupply - currentSupply).toFixed(2));
+            if (change >= IGNORE_RANGE) {
+                const channel = client.channels.cache.get(CHANNEL_ID);
+                if (channel) {
+                    const message = generateMintingMessage(change);
+                    channel.send(message);
                 }
                 else {
-                    console.log(`Minted amount (${formatNumber(change)} vSOL) below IGNORE_RANGE. No message sent.`);
+                    console.error("Channel not found");
                 }
             }
             else {
-                console.log("Initial Supply Set:", formatNumber(newSupply));
+                console.log(`Minted amount (${formatNumber(change)} vSOL) below IGNORE_RANGE. No message sent.`);
             }
-            currentSupply = newSupply;
-            console.log(`Current Token Supply: ${formatNumber(currentSupply)}`);
         }
-        catch (error) {
-            console.error("Error checking supply:", error);
+        else {
+            console.log("Initial Supply Set:", formatNumber(newSupply));
         }
-    }, 30000);
-}
-client.login(process.env.DISCORD_TOKEN);
-async function handler(req, res) {
-    if (!client.isReady()) {
-        await client.login(process.env.DISCORD_TOKEN);
+        currentSupply = newSupply;
+        console.log(`Current Token Supply: ${formatNumber(currentSupply)}`);
     }
-    res.status(200).end("Bot is running");
+    catch (error) {
+        console.error("Error checking supply:", error);
+    }
+}
+// Initialize the bot
+let isInitialized = false;
+async function initializeBot() {
+    if (!isInitialized) {
+        await client.login(process.env.DISCORD_TOKEN);
+        isInitialized = true;
+        console.log("Bot initialized");
+    }
+}
+// Vercel serverless function
+async function handler(req, res) {
+    if (req.method === "POST") {
+        await initializeBot();
+        await checkSupply();
+        res.status(200).json({ message: "Supply check completed" });
+    }
+    else {
+        res.status(200).json({ message: "Bot is running" });
+    }
 }
 exports.default = handler;
