@@ -30,21 +30,21 @@ function generateMintingMessage(amount: number): string {
 
   if (amount >= EXCITEMENT_RANGE_3) {
     messages = [
-      `:pepe_scream: INCREDIBLE! A massive **${formatNumber(amount)} $vSOL** just minted to The vault! This is HUGE!`,
-      `:pepe_scream: PHENOMENAL NEWS! **${formatNumber(amount)} $vSOL** has been minted! The community is THRIVING!`,
-      `:pepe_scream: MIND-BLOWING! **${formatNumber(amount)} $vSOL** has just been minted!`,
+      `⚡⚡ INCREDIBLE! A massive **${formatNumber(amount)} $vSOL** just minted to The vault! This is HUGE!`,
+      `⚡⚡ PHENOMENAL NEWS! **${formatNumber(amount)} $vSOL** has been minted! The community is THRIVING!`,
+      `⚡⚡ MIND-BLOWING! **${formatNumber(amount)} $vSOL** has just been minted!`,
     ]
   } else if (amount >= EXCITEMENT_RANGE_2) {
     messages = [
       `🚀🚀 Major deployment detected! **${formatNumber(amount)} $vSOL** just entered the vault!`,
-      `🎉🎉 Wow! An impressive **${formatNumber(amount)} $vSOL** has been minted! This is big!`,
-      `⚡⚡ Alert! **${formatNumber(amount)} $vSOL** has arrived! The community is growing fast!`,
+      `🚀🚀 Wow! An impressive **${formatNumber(amount)} $vSOL** has been minted! This is big!`,
+      `🚀🚀 Alert! **${formatNumber(amount)} $vSOL** has arrived! The community is growing fast!`,
     ]
   } else if (amount >= EXCITEMENT_RANGE_1) {
     messages = [
-      `🚀 Nice! **${formatNumber(amount)} $vSOL** has been added to the vault!`,
+      `🎉 Nice! **${formatNumber(amount)} $vSOL** has been added to the vault!`,
       `🎉 Exciting times! **${formatNumber(amount)} $vSOL** just minted!`,
-      `⚡ Heads up! **${formatNumber(amount)} $vSOL** has been freshly minted!`,
+      `🎉 Heads up! **${formatNumber(amount)} $vSOL** has been freshly minted!`,
     ]
   } else {
     messages = [
