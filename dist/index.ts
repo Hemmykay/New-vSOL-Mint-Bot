@@ -30,27 +30,27 @@ function generateMintingMessage(amount: number): string {
 
   if (amount >= EXCITEMENT_RANGE_3) {
     messages = [
-      `🚀🚀🚀 INCREDIBLE! A massive ${formatNumber(amount)} vSOL just flooded into the vault! This is HUGE!`,
-      `🎉🎉🎉 PHENOMENAL NEWS! ${formatNumber(amount)} vSOL has been minted! The community is THRIVING!`,
-      `⚡⚡⚡ MIND-BLOWING! ${formatNumber(amount)} vSOL just joined us! This is a GAME-CHANGER!`,
+      `🚀🚀🚀 INCREDIBLE! A massive **${formatNumber(amount)} $vSOL** just minted to The vault! This is HUGE!`,
+      `🎉🎉🎉 PHENOMENAL NEWS! **${formatNumber(amount)} $vSOL** has been minted! The community is THRIVING!`,
+      `⚡⚡⚡ MIND-BLOWING! **${formatNumber(amount)} $vSOL** has just been minted!`,
     ]
   } else if (amount >= EXCITEMENT_RANGE_2) {
     messages = [
-      `🚀🚀 Major deployment detected! ${formatNumber(amount)} vSOL just entered the vault!`,
-      `🎉🎉 Wow! An impressive ${formatNumber(amount)} vSOL has been minted! This is big!`,
-      `⚡⚡ Alert! ${formatNumber(amount)} vSOL has arrived! The community is growing fast!`,
+      `🚀🚀 Major deployment detected! **${formatNumber(amount)} $vSOL** just entered the vault!`,
+      `🎉🎉 Wow! An impressive **${formatNumber(amount)} $vSOL** has been minted! This is big!`,
+      `⚡⚡ Alert! **${formatNumber(amount)} $vSOL** has arrived! The community is growing fast!`,
     ]
   } else if (amount >= EXCITEMENT_RANGE_1) {
     messages = [
-      `🚀 Nice! ${formatNumber(amount)} vSOL has been added to the vault!`,
-      `🎉 Exciting times! ${formatNumber(amount)} vSOL just joined the ranks!`,
-      `⚡ Heads up! ${formatNumber(amount)} vSOL has been freshly minted!`,
+      `🚀 Nice! **${formatNumber(amount)} $vSOL** has been added to the vault!`,
+      `🎉 Exciting times! **${formatNumber(amount)} $vSOL** just minted!`,
+      `⚡ Heads up! **${formatNumber(amount)} $vSOL** has been freshly minted!`,
     ]
   } else {
     messages = [
-      `A new recruit minted ${formatNumber(amount)} vSOL!`,
-      `${formatNumber(amount)} vSOL has arrived on the scene!`,
-      `Welcome aboard! ${formatNumber(amount)} vSOL just joined us!`,
+      `A new recruit minted **${formatNumber(amount)} $vSOL**!`,
+      `**${formatNumber(amount)} $vSOL** has arrived on the scene!`,
+      `Welcome aboard! **${formatNumber(amount)} $vSOL** just minted!`,
     ]
   }
 
