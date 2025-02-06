@@ -28,9 +28,9 @@ function generateMintingMessage(amount) {
     let messages;
     if (amount >= EXCITEMENT_RANGE_3) {
         messages = [
-            `🚀🚀🚀 INCREDIBLE! A massive **${formatNumber(amount)} $vSOL** just minted to The vault! This is HUGE!`,
-            `🎉🎉🎉 PHENOMENAL NEWS! **${formatNumber(amount)} $vSOL** has been minted! The community is THRIVING!`,
-            `⚡⚡⚡ MIND-BLOWING! **${formatNumber(amount)} $vSOL** has just been minted!`,
+            `:pepe_scream: INCREDIBLE! A massive **${formatNumber(amount)} $vSOL** just minted to The vault! This is HUGE!`,
+            `:pepe_scream: PHENOMENAL NEWS! **${formatNumber(amount)} $vSOL** has been minted! The community is THRIVING!`,
+            `:pepe_scream: MIND-BLOWING! **${formatNumber(amount)} $vSOL** has just been minted!`,
         ];
     }
     else if (amount >= EXCITEMENT_RANGE_2) {
