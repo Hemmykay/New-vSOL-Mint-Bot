@@ -1,6 +1,7 @@
 import { Client, GatewayIntentBits, type Message, type TextChannel } from "discord.js"
 import axios from "axios"
 import dotenv from "dotenv"
+const keepAlive = require("../server.js")
 
 dotenv.config()
 
@@ -132,5 +133,6 @@ async function startSupplyCheck() {
   }, 30000)
 }
 
+keepAlive()
 client.login(process.env.DISCORD_TOKEN)
 
