@@ -7,8 +7,7 @@
     "build": "echo 'Starting build process...' && npx tsc --project tsconfig.json && echo 'Build completed successfully'",
     "start": "node dist/index.js || node index.js",
     "dev": "ts-node src/index.ts",
-    "watch": "tsc --watch --project tsconfig.json",
-    "watch:dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts"
+    "watch": "tsc --watch --project tsconfig.json"
   },
   "dependencies": {
     "axios": "^0.27.2",
@@ -18,11 +17,9 @@
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
-    "nodemon": "^2.0.22",
     "ts-node": "^10.9.1"
   },
   "engines": {
     "node": ">=16.9.0"
   }
 }
-
