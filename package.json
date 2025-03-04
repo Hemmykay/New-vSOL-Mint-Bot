@@ -4,22 +4,25 @@
   "description": "Discord bot that tracks vSOL token minting on Solana",
   "main": "dist/index.js",
   "scripts": {
-    "prebuild": "node src/build-check.js",
-    "build": "npx tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts"
+    "build": "echo 'Starting build process...' && npx tsc --project tsconfig.json && echo 'Build completed successfully'",
+    "start": "node dist/index.js || node index.js",
+    "dev": "ts-node src/index.ts",
+    "watch": "tsc --watch --project tsconfig.json",
+    "watch:dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts"
   },
   "dependencies": {
     "axios": "^0.27.2",
     "discord.js": "^14.7.1",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "typescript": "^4.9.3"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.9.3"
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1"
   },
   "engines": {
     "node": ">=16.9.0"
   }
 }
+
