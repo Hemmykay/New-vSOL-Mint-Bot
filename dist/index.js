@@ -106,15 +106,15 @@ async function startSupplyCheck() {
                         console.error("Channel not found");
                     }
                 }
-                // else {
-                //   console.log(`Minted amount (${formatNumber(change)} vSOL) below IGNORE_RANGE. No message sent.`)
-                // }
+                else {
+                  console.log(`Minted amount (${formatNumber(change)} vSOL) below IGNORE_RANGE. No message sent.`)
+                }
             }
-            // else {
-            //   console.log("Initial Supply Set:", formatNumber(newSupply))
-            // }
+            else {
+              console.log("Initial Supply Set:", formatNumber(newSupply))
+            }
             currentSupply = newSupply;
-            // console.log(`Current Token Supply: ${formatNumber(currentSupply)}`)
+            console.log(`Current Token Supply: ${formatNumber(currentSupply)}`)
         }
         catch (error) {
             console.error("Error checking supply:", error);
